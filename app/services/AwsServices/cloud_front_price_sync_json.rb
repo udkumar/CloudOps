@@ -33,7 +33,7 @@ module AwsServices
 					effective_date = details['effectiveDate']
 					details['priceDimensions'].each do |_name, dimension|
 
-						result << { 'description' => dimension['description'], 'beginRange' => dimension['beginRange'], 'endRange' => dimension['endRange'], 'unit' => dimension['unit'], 'pricePerUnit' => dimension['pricePerUnit']['USD'], 'effectiveDate' => effective_date }
+						result << { 'source_type' => "aws", 'description' => dimension['description'], 'beginRange' => dimension['beginRange'], 'endRange' => dimension['endRange'], 'unit' => dimension['unit'], 'pricePerUnit' => dimension['pricePerUnit']['USD'], 'effectiveDate' => effective_date }
 					end
 				end
 			end
