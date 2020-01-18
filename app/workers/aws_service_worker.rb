@@ -1,12 +1,12 @@
 class AwsServiceWorker
   include Sidekiq::Worker
-  include Sidekiq::Status::Worker
+  # include Sidekiq::Status::Worker
   sidekiq_options retry: false
 
-  def perform(*args)
+  def perform_in(*args)
     AwsServiceWorker.cf_price_sync
   end
-
+  
   private
 
  	def cf_price_sync
