@@ -28,27 +28,29 @@ module AwsServices
     
     def price_data_save(cf_data)
     	result = []
+      
 	    cf_data['terms']['OnDemand'].each do |_product_key, offers|
 				offers.each do |_offer, details|
-					effective_date = details['effectiveDate']
-					details['priceDimensions'].each do |_name, dimension|
-
-						result << { 'source_type' => "aws", 'description' => dimension['description'], 'beginRange' => dimension['beginRange'], 'endRange' => dimension['endRange'], 'unit' => dimension['unit'], 'pricePerUnit' => dimension['pricePerUnit']['USD'], 'effectiveDate' => effective_date }
+          @price = AwsCloudFrontPrice.new
+					
+          effective_date = details['effectiveDate']
+          sku_number = details['sku']
+          product_region = cf_data['products'][sku_number]['attributes']["location"]
+					
+          details['priceDimensions'].each do |_name, dimension| 
+            @price.description = dimension['description']
+            @price.begin_range = dimension['beginRange']
+            @price.end_range   = dimension['endRange']
+            @price.unit        = dimension['unit']
+            @price.price_per_unit = dimension['pricePerUnit']['USD']
+            @price.effective_date = effective_date
+            @price.region_name = product_region
 					end
+          @price.save
 				end
+        
 			end
-			return result
     end
 
   end
 end
-
-
-# {
-# 	"description"=>"$0.085 per GB - next 4 PB / month data transfer out", 
-# 	"beginRange"=>"1048576", 
-# 	"endRange"=>"5242880", 
-# 	"unit"=>"GB", 
-# 	"pricePerUnit"=>"0.0850000000", 
-# 	"effectiveDate"=>"2019-12-01T00:00:00Z"
-# }
