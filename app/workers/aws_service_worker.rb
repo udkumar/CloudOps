@@ -4,9 +4,9 @@ class AwsServiceWorker
   sidekiq_options retry: false
 
   def perform_in(*args)
-    AwsServiceWorker.cf_price_sync
+    cf_price_sync
   end
-  
+
   private
 
  	def cf_price_sync
