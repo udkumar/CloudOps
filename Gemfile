@@ -11,7 +11,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
+# gem 'jbuilder', '~> 2.7'
 
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
@@ -38,5 +38,9 @@ end
 # gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'httparty'
+
 gem 'sidekiq'
 gem 'sidekiq-cron'
+
+#fast_jsonapi gem has a development dependency on active_model_serializers ~> 0.10.7 
+gem 'fast_jsonapi'
