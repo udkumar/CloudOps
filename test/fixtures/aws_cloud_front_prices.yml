@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  source_type: 1
+  description: MyText
+  begin_range: 
+  end_range: 
+  unit: MyText
+  price_per_unit: 1.5
+  effective_date: 2020-01-18
+
+two:
+  source_type: 1
+  description: MyText
+  begin_range: 
+  end_range: 
+  unit: MyText
+  price_per_unit: 1.5
+  effective_date: 2020-01-18
