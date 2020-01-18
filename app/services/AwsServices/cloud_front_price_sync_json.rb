@@ -34,19 +34,29 @@ module AwsServices
           @price = AwsCloudFrontPrice.new
 					
           effective_date = details['effectiveDate']
+
           sku_number = details['sku']
-          product_region = cf_data['products'][sku_number]['attributes']["location"]
-					
-          details['priceDimensions'].each do |_name, dimension| 
-            @price.description = dimension['description']
-            @price.begin_range = dimension['beginRange']
-            @price.end_range   = dimension['endRange']
-            @price.unit        = dimension['unit']
-            @price.price_per_unit = dimension['pricePerUnit']['USD']
-            @price.effective_date = effective_date
-            @price.region_name = product_region
-					end
-          @price.save
+          region_name = cf_data['products'][sku_number]['attributes']["location"]
+
+          # Added region code manually because code is not available in given APIs
+          region_hash = {"EU (Paris)" => "eu-west-3", "US West (Oregon)" => "us-west-2", "EU (London)" => "eu-west-2", "South America (Sao Paulo)" => "sa-east-1", "EU (Frankfurt)" => "eu-central-1", "Asia Pacific (Hong Kong)" => "ap-east-1", "Asia Pacific (Seoul)" => "ap-northeast-2", "Asia Pacific (Mumbai)" => "ap-south-1", "EU (Ireland)" => "eu-west-1", "US East (N. Virginia)" => "us-east-1", "US West (N. California)" => "us-west-1", "Asia Pacific (Singapore)" => "ap-southeast-1", "Asia Pacific (Sydney)" => "ap-southeast-2", "EU (London)" => "eu-west-2", "US East (Ohio)" => "eu-east-2", "EU (Stockholm)" => "eu-north-1", "Middle East (Bahrain)" => "me-south-1", "Canada (Central)" => "ca-central-1", "Asia Pacific (Tokyo)" => "ap-northeast-1"}
+          region_code = region_hash[region_name]
+
+          # Sync only unique data
+					check_date = AwsCloudFrontPrice.find_by_effective_date(effective_date)
+          if !check_date.present?
+            details['priceDimensions'].each do |_name, dimension| 
+              @price.description = dimension['description']
+              @price.begin_range = dimension['beginRange']
+              @price.end_range   = dimension['endRange']
+              @price.unit        = dimension['unit']
+              @price.price_per_unit = dimension['pricePerUnit']['USD']
+              @price.effective_date = effective_date
+              @price.region_name = region_name
+              @price.region_code = region_code || ""
+  					end
+            @price.save
+          end
 				end
         
 			end
