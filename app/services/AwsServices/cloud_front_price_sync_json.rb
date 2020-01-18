@@ -44,7 +44,7 @@ module AwsServices
 
           # Sync only unique data
 					check_date = AwsCloudFrontPrice.find_by_effective_date(effective_date)
-          if !check_date.present?
+          if !check_date
             details['priceDimensions'].each do |_name, dimension| 
               @price.description = dimension['description']
               @price.begin_range = dimension['beginRange']
