@@ -10,7 +10,7 @@
 - API has ability to search by date ```/api/v1/amazon_cloud_front/region/us-east-1?date="2019-12-01"```. 
 - Syncing only new record in the database from Amazon CLoudFront On-Demand price APIs.
 
-### highlighting which I covered inmy code 
+### highlighting which I covered in my code 
 - Sync CLoudFront On-Demand in ```services/AwsServices/cloud_front_price_sync_json.rb``` as module.
 - Added worker to perform sync and running worker through ```sidekiq-cron``` yml 
 - Exception handling and API response handling ```controllers/concerns/*```
