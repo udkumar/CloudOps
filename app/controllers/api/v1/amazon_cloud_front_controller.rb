@@ -1,20 +1,11 @@
 class Api::V1::AmazonCloudFrontController < ApplicationController
-  
-
   def price_by_region
-  	# if params[:date]
-  	@cf_prices = AwsCloudFrontPrice.where("region_code > :value",  value: params[:id]).or(AwsCloudFrontPrice.where("effective_date > :filter_by_date",  filter_by_date: params[:date]))
-  	if @cf_prices
-  		render json: @cf_prices
-  	end
-  end
-
-  def filter_price_by_region
-  	render json: AwsCloudFrontPrice.find_by_effective_date(params[:date])
+    @cf_prices = AwsCloudFrontPrice.filter_by_region_date(params[:id], params[:date])
+    json_response(@cf_prices, '200')
   end
 
   def sync_aws_cf_data
-  	AwsServiceWorker.perform
+    AwsServiceWorker.perform
   end
 
   private
@@ -22,5 +13,4 @@ class Api::V1::AmazonCloudFrontController < ApplicationController
   def serializer
     AwsCloudFrontPriceSerializer
   end
-
 end
