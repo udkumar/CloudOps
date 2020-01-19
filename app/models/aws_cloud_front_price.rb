@@ -1,6 +1,7 @@
 class AwsCloudFrontPrice < ApplicationRecord
   before_save :service_source_default_name
 
+  # Provide data to API call
   def self.filter_by_region_date(*args)
     cf_prices = ''
     if args[1]
@@ -11,6 +12,7 @@ class AwsCloudFrontPrice < ApplicationRecord
     cf_prices
   end
 
+  # Manual mapping region and region name
   def self.aws_region_mapping(service_source)
   	case service_source
     when "aws"
