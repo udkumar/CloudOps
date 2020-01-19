@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_19_173723) do
+ActiveRecord::Schema.define(version: 2020_01_19_184127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2020_01_19_173723) do
     t.string "region_code"
     t.string "service_source"
     t.string "rate_code"
+    t.index ["effective_date"], name: "index_aws_cloud_front_prices_on_effective_date"
+    t.index ["region_code"], name: "index_aws_cloud_front_prices_on_region_code"
   end
 
 end
