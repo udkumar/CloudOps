@@ -1,11 +1,17 @@
-# Prerequisite
-* rails 5 +
-* ruby 2.5+
-* postgressql 10+
+### Prerequisite
 
-## Fetch the Amazon CLoudFront On-Demand pricing from below URL"
-["CLoudFront On-Demand pricing"]("https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonCloudFront/current/index.json")
+- Rails 5+
+- Ruby 5+
+- Postgressql 10+
 
->> Fetching data and saving in database daily at midnight. Saving only unique data. For fetching data I added services and worker and worker is calling by scheduler.
+### System Ability
+- Fetch the  Amazon CLoudFront On-Demand price from link [API](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonCloudFront/current/index.json) daily at midnight
+- System will provide one API ``` GET /api/v1/amazon_cloud_front/region/us-east-1```. List of all On-Demand price from given region.
+- API has ability to search by date ```/api/v1/amazon_cloud_front/region/us-east-1?date="2019-12-01"```. 
 
-
+###highlighting which I covered inmy code 
+- Sync CLoudFront On-Demand in ```services/AwsServices/cloud_front_price_sync_json.rb``` as module.
+- Added worker to perform sync and running worker through ```sidekiq-cron``` yml 
+- Exception handling and API response handling ```controllers/concerns/*```
+- Manual mapping AWS CLoudFront On-Demand in model as function name ```aws_region_mapping```
+- Used ```FastJsonApi``` for serializing JSON responses.
