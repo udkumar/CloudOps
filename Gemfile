@@ -47,3 +47,7 @@ gem 'sidekiq-cron'
 gem 'fast_jsonapi'
 
 gem 'rubocop', '~> 0.79.0', require: false
+
+#pager_api depends on Pagy, Kaminari, WillPaginate to handle pagination.
+gem 'pagy'
+gem 'pager_api'
