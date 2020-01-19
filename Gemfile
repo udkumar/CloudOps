@@ -10,9 +10,6 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.7'
-
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
 
@@ -24,7 +21,11 @@ gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+
+  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+    gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master' # Previously '4-0-dev' or '4-0-maintenance' branch
+  end
 end
 
 group :development do
@@ -42,5 +43,7 @@ gem 'httparty'
 gem 'sidekiq'
 gem 'sidekiq-cron'
 
-#fast_jsonapi gem has a development dependency on active_model_serializers ~> 0.10.7 
+# fast_jsonapi gem has a development dependency on active_model_serializers ~> 0.10.7
 gem 'fast_jsonapi'
+
+gem 'rubocop', '~> 0.79.0', require: false
