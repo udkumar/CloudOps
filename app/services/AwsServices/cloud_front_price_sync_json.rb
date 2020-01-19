@@ -24,38 +24,37 @@ module AwsServices
 
     private
 
+    # Sync only unique data and Added region code manually (not avilable in given APIs)
     def price_data_save(cf_data)
       cf_data['terms']['OnDemand'].each do |_product_key, offers|
         offers.each do |_offer, details|
-          @price = AwsCloudFrontPrice.new
-
           effective_date = details['effectiveDate']
-
           sku_number = details['sku']
           region_name = cf_data['products'][sku_number]['attributes']['location']
 
-          # Added region code manually because code is not available in given APIs
           region_hash = AwsCloudFrontPrice.aws_region_mapping("aws")
           region_code = region_hash[region_name]
 
-          # Sync only unique data
-          check_date = AwsCloudFrontPrice.find_by_effective_date(effective_date)
-          # next if check_date
-          AwsCloudFrontPrice.select(:effective_date).group(:effective_date).having("effective_date == #{effective_date}")
           details['priceDimensions'].each do |_name, dimension|
-            @price.description = dimension['description'] || ''
-            @price.begin_range = dimension['beginRange'] || ''
-            @price.end_range   = dimension['endRange'] || ''
-            @price.unit        = dimension['unit'] || ''
-            @price.price_per_unit = dimension['pricePerUnit']['USD'] || ''
-            @price.effective_date = effective_date || ''
-            @price.region_name = region_name || ''
-            @price.region_code = region_code || ''
+            check_date = AwsCloudFrontPrice.where("effective_date = ? AND rate_code = ?", effective_date, dimension['rateCode']).first
+            next if check_date.present?
+
+            price = AwsCloudFrontPrice.new
+            price.description = dimension['description'] || ''
+            price.begin_range = dimension['beginRange'] || ''
+            price.end_range   = dimension['endRange'] || ''
+            price.unit        = dimension['unit'] || ''
+            price.price_per_unit = dimension['pricePerUnit']['USD'] || ''
+            price.effective_date = effective_date || ''
+            price.region_name = region_name || ''
+            price.region_code = region_code || ''
+            price.rate_code = dimension['rateCode'] || ''  # unique field for all region
+            price.save
           end
-          @price.save
+          
         end
       end
     end
-
   end
+
 end
