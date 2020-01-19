@@ -51,7 +51,6 @@ module AwsServices
             price.rate_code = dimension['rateCode'] || ''  # unique field for all region
             price.save
           end
-          
         end
       end
     end
