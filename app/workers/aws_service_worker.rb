@@ -1,6 +1,5 @@
 class AwsServiceWorker 
   include Sidekiq::Worker
-  # include Sidekiq::Status::Worker
   sidekiq_options retry: false
 
   def perform_in(*_args)
