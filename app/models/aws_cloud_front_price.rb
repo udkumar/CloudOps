@@ -7,7 +7,7 @@ class AwsCloudFrontPrice < ApplicationRecord
       cf_prices = AwsCloudFrontPrice.where('region_code=? AND effective_date=?', args[0], args[1])
     else
       cf_prices = AwsCloudFrontPrice.where('region_code=?', args[0])
-      end
+    end
     cf_prices
   end
 
