@@ -19,7 +19,6 @@ class AwsCloudFrontPrice < ApplicationRecord
  			{ 
         'EU (Paris)' => 'eu-west-3', 
         'US West (Oregon)' => 'us-west-2', 
-        'EU (London)' => 'eu-west-2', 
         'South America (Sao Paulo)' => 'sa-east-1', 
         'EU (Frankfurt)' => 'eu-central-1', 
         'Asia Pacific (Hong Kong)' => 'ap-east-1', 
