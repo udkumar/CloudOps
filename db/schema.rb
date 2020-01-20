@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(version: 2020_01_19_184127) do
 
   create_table "aws_cloud_front_prices", force: :cascade do |t|
     t.text "description"
-    t.text "begin_range"
-    t.text "end_range"
-    t.text "unit"
+    t.string "begin_range"
+    t.string "end_range"
+    t.string "unit"
     t.float "price_per_unit"
     t.date "effective_date"
     t.datetime "created_at", precision: 6, null: false
