@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :aws_cloud_front_price do
-  	description { Faker::Lorem.word }
+  	description { Faker::Lorem.paragraph(2) }
     begin_range { Faker::Lorem.paragraph(2) }
     end_range { Faker::Lorem.paragraph(2) }
     unit { Faker::Lorem.paragraph(2) }
