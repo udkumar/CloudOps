@@ -13,6 +13,9 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'factory_bot'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -35,6 +38,15 @@ RSpec.configure do |config|
     # a real object. This is generally recommended, and will default to
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
+  end
+
+  config.expect_with :rspec do |expectations|
+    expectations.syntax = [:expect, :should]
+  end
+  config.include FactoryBot::Syntax::Methods
+
+  config.before(:suite) do
+      FactoryBot.find_definitions
   end
 
   # This option will default to `:apply_to_host_groups` in RSpec 4 (and will
