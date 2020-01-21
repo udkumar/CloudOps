@@ -2,32 +2,40 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AmazonCloudFrontController, type: :controller do
 
-  # let!(:aws_cloud_front_price) { create_list(:aws_cloud_front_price, 10) }
-  let(:region_code) { "us-east-1" }
-  
-  # Test suite for GET /api/v1/amazon_cloud_front/region/:id
-  describe 'GET /api/v1/amazon_cloud_front/region/:id' do
-    before { get '' }
+  before do
+    @effective_date1 = Date.parse("2020-01-01")
+    @effective_date2 = Date.parse("2020-01-02")
+    @ac_front_price1 = FactoryBot.create(:aws_cloud_front_price, {region_code: "us-east-1", effective_date: @effective_date1})
+    @ac_front_price2 = FactoryBot.create(:aws_cloud_front_price, {region_code: "us-east-1",meffective_date: @effective_date2})
+  end
 
-    context 'when the record exists' do
-      it 'returns the amazon_cloud_front' do
-        expect(json).not_to be_empty
-        # expect(json['id']).to eq(region_code)
+  describe 'GET /api/v1/amazon_cloud_front/region/:id' do
+    context "region exist" do
+      it "should success without date" do
+        get :price_by_region, params: {id: "us-east-1"}
+        expect(response.status).to eq(200)
+        json_body = JSON.parse(response.body)
+        expect(json_body.count).to eq(2)
+        # expect(json_body["TODO"]).to eq("TODO")
+        # expect whatever is coming in the response
       end
 
-      it 'returns status code 200' do
-        # expect(response).to have_http_status(200)
+      it "should success with date" do
+        get :price_by_region, params: {id: "us-east-1", date: @effective_date1}
+        expect(response.status).to eq(200)
+        json_body = JSON.parse(response.body)
+        expect(json_body.count).to eq(1)
+        # expect(json_body["TODO"]).to eq("TODO")
+        # expect whatever is coming in the response
       end
     end
 
-    context 'when the record does not exist' do
-      
-      it 'returns status code 404' do
-        # expect(response).to have_http_status(404)
-      end
-
-      it 'returns a not found message' do
-        # expect(response.body).to match("{\"message\":\"Couldn't find AmazonCloudFront with 'id'=us-east-1\"}")
+    context "region does not exist" do
+      it "should fail" do
+        get :price_by_region, params: {id: "us-east-1", date: @effective_date1}
+        expect(response.status).to eq(400)
+        json_body = JSON.parse(response.body)
+        expect(json_body).to eq({"message"=>"Couldn't find AmazonCloudFront with 'id'=us-east-1"})
       end
     end
   end
